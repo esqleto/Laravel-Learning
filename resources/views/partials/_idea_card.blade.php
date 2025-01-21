@@ -9,13 +9,43 @@
                         </a></h5>
                 </div>
             </div>
-        </div>
+            <div>
+
+                <form method="POST" action="{{route('idea.destroy', $idea->id)}}">
+                    @csrf
+                    @method('delete')
+                    <a class="mx-2" href="{{ route('idea.edit', $idea->id) }}">Edit</a>
+                    <a href="{{ route('idea.show', $idea->id) }}">View</a>
+                    <button class="ms-1 btn btn-danger btn-small">X</button>
+                </form>
+                
+            </div>
+        </div>  
     </div>
-   
+        
         <div class="card-body">
-            <p class="fs-6 fw-light text-muted">
-                {{$idea->content}}
-            </p>
+            @if ($editing ?? false)
+                <h4> Share yours ideas </h4>
+                <div class="row">
+                    <form action="{{ route('idea.update', $idea->id)}}" method="post">
+                        @csrf
+                        @method('put')
+                        <div class="mb-3">
+                            <textarea name="content" class="form-control" id="content" rows="3">{{ $idea->content }}</textarea>
+                            @error('content')
+                                <span class="fs-6 text-danger">{{$message}}</span>
+                            @enderror
+                        </div>
+                        <div class="">
+                            <button class="btn btn-dark"> Share </button>
+                        </div>
+                    </form>
+                </div>
+            @else
+                <p class="fs-6 fw-light text-muted">
+                    {{$idea->content}}
+                </p>
+            @endif
             <div class="d-flex justify-content-between">
                 <div>
                     <a href="#" class="fw-light nav-link fs-6"> <span class="fas fa-heart me-1">
